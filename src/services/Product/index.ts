@@ -1,7 +1,7 @@
 "use server";
 import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 
 // get all products 
 export const getAllProducts = async (
