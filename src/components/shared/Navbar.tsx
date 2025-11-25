@@ -42,8 +42,8 @@ export default function Navbar() {
         {/* LOGO */}
         <div className="items-center py-2">
           <Link href="/" className="inline-block">
-            <div className="inline-block transform transition-transform duration-300 ease-in-out hover:scale-105">
-              <Logo className="cursor-pointer" />
+            <div className="inline-block transform transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
+              <Logo />
             </div>
           </Link>
         </div>
