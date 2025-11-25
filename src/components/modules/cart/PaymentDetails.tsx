@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/context/UserContext";
 import { currencyFormatter } from "@/lib/currencyFormatter";
 import {
   citySelector,
@@ -18,7 +17,6 @@ import {
 } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createOrder } from "@/services/cart";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import OrderSuccessDialog from "./OrderSuccessDialog";
 
@@ -34,8 +32,6 @@ export default function PaymentDetails() {
   const coupon = useAppSelector(couponSelector);
   const discountAmount = useAppSelector(discountAmountSelector);
 
-  const user = useUser();
-  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const [showSuccess, setShowSuccess] = useState(false);
@@ -45,11 +41,6 @@ export default function PaymentDetails() {
     console.log("Order Now button clicked.");
     const orderLoading = toast.loading("Order is being placed...");
     try {
-      if (!user.user) {
-        router.push("/login");
-        throw new Error("Please login first.");
-      }
-
       if (!city) {
         throw new Error("City is missing");
       }
