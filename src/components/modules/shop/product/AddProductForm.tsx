@@ -17,30 +17,22 @@ import {
   useForm,
 } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
 import { Plus } from "lucide-react";
 import Logo from "@/assets/svgs/Logo";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ICategory } from "@/types";
-import { getAllCategories } from "@/services/Category";
+// import { ICategory } from "@/types";
+// import { getAllCategories } from "@/services/Category";
 import { addProduct } from "@/services/Product";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export default function AddProductsForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
-  const [categories, setCategories] = useState<ICategory[] | []>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  // const [categories, setCategories] = useState<ICategory[] | []>([]);
+  // const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const router = useRouter();
 
@@ -51,8 +43,8 @@ export default function AddProductsForm() {
       seoDescription: "",
       seoKeywords: [{ value: "" }],
       price: "",
-      category: "",
-      subcategory: "",
+      // category: "",
+      // subcategory: "",
       stock: "",
       weight: "",
       availableSizes: [{ value: "" }],
@@ -101,17 +93,6 @@ export default function AddProductsForm() {
   };
 
   // console.log(specFields);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [categoriesData] = await Promise.all([getAllCategories()]);
-
-      setCategories(categoriesData?.data);
-    };
-
-    fetchData();
-  }, []);
-  // console.log({ categories });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     // console.log({ data });
@@ -279,69 +260,7 @@ export default function AddProductsForm() {
                 </FormItem>
               )}
             />
-            {/* Category */}
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select
-                    onValueChange={(val) => {
-                      field.onChange(val);
-                      setSelectedCategory(val);
-                      form.setValue("subcategory", ""); // reset subcategory
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Product Category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category._id} value={category._id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Subcategory */}
-            <FormField
-              control={form.control}
-              name="subcategory"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subcategory</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value || ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Product Subcategory" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories
-                        .find((cat) => cat._id === selectedCategory)
-                        ?.children?.map((child) => (
-                          <SelectItem key={child._id} value={child._id}>
-                            {child.name}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+           
 
             {/* Stock */}
             <FormField

@@ -30,8 +30,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ICategory, IProduct } from "@/types";
-import { getAllCategories } from "@/services/Category";
+import {IProduct } from "@/types";
+// import { getAllCategories } from "@/services/Category";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateProduct } from "@/services/Product";
@@ -45,7 +45,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
     product?.images.map((img) => img.url) || []
   );
 
-  const [categories, setCategories] = useState<ICategory[] | []>([]);
+  // const [categories, setCategories] = useState<ICategory[] | []>([]);
 
   // const [brands, setBrands] = useState<IBrand[] | []>([]);
 
@@ -62,7 +62,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
       })) || [{ value: "" }],
 
       price: product?.price || "",
-      category: product?.category?._id || "",
+      // category: product?.category?._id || "",
       // brand: product?.brand?.name || "",
       stock: product?.stock || "",
       weight: product?.weight || "",
@@ -121,18 +121,18 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
   };
 
   // Fetching  All Categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesData = await getAllCategories();
-        setCategories(categoriesData?.data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    };
-    // Calling fetchCategories
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const categoriesData = await getAllCategories();
+  //       setCategories(categoriesData?.data);
+  //     } catch (error) {
+  //       console.error("Failed to fetch categories:", error);
+  //     }
+  //   };
+  //   // Calling fetchCategories
+  //   fetchCategories();
+  // }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     // console.log({ data });
@@ -302,7 +302,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
               )}
             />
             {/* Category */}
-            <FormField
+            {/* <FormField
               control={form.control}
               name="category"
               render={({ field }) => (
@@ -337,7 +337,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             {/* brand */}
             {/* <FormField
               control={form.control}
