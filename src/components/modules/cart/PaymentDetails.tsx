@@ -14,6 +14,8 @@ import {
   subTotalSelector,
   couponSelector,
   discountAmountSelector,
+  nameSelector,
+  mobileSelector,
 } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { createOrder } from "@/services/cart";
@@ -26,6 +28,9 @@ export default function PaymentDetails() {
   const grandTotal = useAppSelector(grandTotalSelector);
   const order = useAppSelector(orderSelector);
   const city = useAppSelector(citySelector);
+  const name = useAppSelector(nameSelector);
+  const mobile = useAppSelector(mobileSelector);
+  // const email = useAppSelector(emailSelector);
   const shippingAddress = useAppSelector(shippingAddressSelector);
   const cartProducts = useAppSelector(orderedProductsSelector);
 
@@ -41,8 +46,17 @@ export default function PaymentDetails() {
     console.log("Order Now button clicked.");
     const orderLoading = toast.loading("Order is being placed...");
     try {
+      if (!name) {
+        throw new Error("Customer Name is missing");
+      }
+      if (!mobile) {
+        throw new Error("Mobile number is missing"); 
+      }
+      // if (!email) {
+      //   throw new Error("Email is missing");
+      // }
       if (!city) {
-        throw new Error("City is missing");
+        throw new Error("Shipping City is missing");
       }
 
       if (!shippingAddress) {
@@ -52,6 +66,7 @@ export default function PaymentDetails() {
       if (cartProducts.length === 0) {
         throw new Error("Cart is empty, what are you trying to order?");
       }
+      // console.log({order});
 
       let orderDataToSend;
       if (coupon.code) {
@@ -62,6 +77,8 @@ export default function PaymentDetails() {
 
       const res = await createOrder(orderDataToSend);
       console.log("Order response:", res);
+
+      console.log("res.data", res.data);
 
       if (res.success) {
         toast.success(res.message, { id: orderLoading });
@@ -123,8 +140,7 @@ export default function PaymentDetails() {
       <OrderSuccessDialog
         open={showSuccess}
         onClose={() => setShowSuccess(false)}
-
-      orderData={orderData}
+        orderData={orderData}
       />
     </>
   );

@@ -8,6 +8,9 @@ export interface CartProduct extends IProduct {
 }
 
 interface InitialState {
+  name: string;
+  mobile: string;
+  email: string;
   products: CartProduct[];
   city: string;
   shippingAddress: string;
@@ -20,6 +23,9 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
+  name: "",
+  mobile: "",
+  email: "",
   products: [],
   city: "",
   shippingAddress: "",
@@ -96,6 +102,15 @@ const cartSlice = createSlice({
         (product) => product._id !== action.payload
       );
     },
+    updateName: (state, action) => {
+      state.name = action.payload;
+    },
+    updateMobile: (state, action) => {
+      state.mobile = action.payload;
+    },
+    updateEmail: (state, action) => {
+      state.email = action.payload;
+    },
     updateCity: (state, action) => {
       state.city = action.payload;
     },
@@ -103,11 +118,15 @@ const cartSlice = createSlice({
       state.shippingAddress = action.payload;
     },
     clearCart: (state) => {
+      state.name = "";
+      state.mobile = "";
+      state.email = "";
       state.products = [];
       state.city = "";
       state.shippingAddress = "";
     },
   },
+
   extraReducers: (builder) => {
     builder.addCase(fetchCoupon.pending, (state) => {
       state.coupon.isLoading = true;
@@ -136,6 +155,9 @@ export const orderedProductsSelector = (state: RootState) => {
 
 export const orderSelector = (state: RootState) => {
   return {
+    name: state.cart.name,
+    mobile: state.cart.mobile,
+    email: state.cart.email,
     products: state.cart.products.map((product) => ({
       product: product._id,
       quantity: product.orderQuantity,
@@ -162,16 +184,16 @@ export const subTotalSelector = (state: RootState) => {
 export const shippingCostSelector = (state: RootState) => {
   if (
     state.cart.city &&
-    state.cart.city === "Dhaka" &&
+    state.cart.city === "ঢাকা শহরের ভিতরে (BDT 70)" &&
     state.cart.products.length > 0
   ) {
-    return 60;
+    return 70;
   } else if (
     state.cart.city &&
-    state.cart.city !== "Dhaka" &&
+    state.cart.city !== "ঢাকা শহরের ভিতরে (BDT 70)" &&
     state.cart.products.length > 0
   ) {
-    return 120;
+    return 130;
   } else {
     return 0;
   }
@@ -192,7 +214,17 @@ export const discountAmountSelector = (state: RootState) => {
   return state.cart.coupon.discountAmount;
 };
 
-//* Address
+//* Address and others
+
+export const nameSelector = (state: RootState) => {
+  return state.cart.name;
+};
+export const mobileSelector = (state: RootState) => {
+  return state.cart.mobile;
+};
+export const emailSelector = (state: RootState) => {
+  return state.cart.name;
+};
 
 export const citySelector = (state: RootState) => {
   return state.cart.city;
@@ -207,6 +239,9 @@ export const {
   incrementOrderQuantity,
   decrementOrderQuantity,
   removeProduct,
+  updateName,
+  updateMobile,
+  updateEmail,
   updateCity,
   updateShippingAddress,
   clearCart,

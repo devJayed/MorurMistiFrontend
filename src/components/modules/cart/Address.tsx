@@ -14,6 +14,7 @@ import { cities } from "@/constants/cities";
 import {
   citySelector,
   shippingAddressSelector,
+  updateName,
   updateCity,
   updateShippingAddress,
 } from "@/redux/features/cartSlice";
@@ -21,29 +22,27 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Address() {
   const dispatch = useAppDispatch();
-  const selectedCity = useAppSelector(citySelector);
-  const shippingAddress = useAppSelector(shippingAddressSelector);
+  // const selectedCity = useAppSelector(citySelector);
+  // const shippingAddress = useAppSelector(shippingAddressSelector);
+
+  // const handleName = (address: string) => {
+  //   dispatch(updateName(address));
+  // };
 
   const handleCitySelect = (city: string) => {
     dispatch(updateCity(city));
   };
 
-  const handleShippingAddress = (address: string) => {
-    dispatch(updateShippingAddress(address));
-  };
+  // const handleShippingAddress = (address: string) => {
+  //   dispatch(updateShippingAddress(address));
+  // };
 
   return (
-    <div className="border border-gray-200 bg-white rounded-xl shadow-sm p-5 md:p-6">
-      <h1 className="text-xl font-bold text-gray-800 mb-1">শিপিং অ্যাড্রেস</h1>
-      <p className="text-gray-500 mb-6 text-sm">
-        অর্ডার করতে আপনার তথ্য দিন 
-      </p>
+    <div className="">
+      <h1 className="font-bold text-lg">শিপিং অ্যাড্রেস</h1>
 
       {/* City Select */}
       <div className="mb-5">
-        <Label htmlFor="city" className="mb-2 block text-sm font-medium text-gray-700">
-         আপনার শহর সিলেক্ট করুনঃ 
-        </Label>
         <Select onValueChange={handleCitySelect}>
           <SelectTrigger id="city" className="w-full">
             <SelectValue placeholder="Choose a city" />
@@ -56,21 +55,6 @@ export default function Address() {
             ))}
           </SelectContent>
         </Select>
-      </div>
-
-      {/* Full Address */}
-      <div>
-        <Label htmlFor="full-address" className="mb-2 block text-sm font-medium text-gray-700">
-          সম্পূর্ণ ঠিকানা লিখুনঃ
-        </Label>
-        <Textarea
-          id="full-address"
-          value={shippingAddress}
-          onChange={(e) => handleShippingAddress(e.target.value)}
-          placeholder="হাউস নং, রোড নং, এরিয়া, থানা ..."
-          rows={5}
-          className="resize-none"
-        />
       </div>
     </div>
   );

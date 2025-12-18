@@ -21,9 +21,12 @@ export default function OrderSuccessDialog({
 }: OrderSuccessDialogProps) {
   if (!orderData) return null;
 
+  console.log({ orderData });
+
   const {
     orderId,
-    user,
+    name,
+    mobile,
     products,
     finalAmount,
     shippingAddress,
@@ -44,7 +47,7 @@ export default function OrderSuccessDialog({
         </DialogHeader>
 
         <p className="text-gray-700 text-center text-sm leading-relaxed -my-2">
-          প্রিয় <span className="font-semibold">{user?.name}</span>, আপনার অর্ডারটি
+          প্রিয় <span className="font-semibold">{name}</span>, আপনার অর্ডারটি
           সফলভাবে গ্রহণ করা হয়েছে।
         </p>
 
@@ -60,7 +63,9 @@ export default function OrderSuccessDialog({
             </span>
           </p>
           <p className="text-sm">
-            <span className="font-semibold text-gray-700">পেমেন্ট স্ট্যাটাসঃ</span>{" "}
+            <span className="font-semibold text-gray-700">
+              পেমেন্ট স্ট্যাটাসঃ
+            </span>{" "}
             <span
               className={`capitalize font-medium ${
                 paymentStatus === "Paid"
@@ -110,12 +115,12 @@ export default function OrderSuccessDialog({
         {/* Customer Info */}
         <div className="text-center text-sm">
           <p>
-            <span className="font-semibold text-gray-700">কাস্টমারঃ</span>{" "}
-            {user?.name || "N/A"}
+            <span className="font-semibold text-gray-700">কাস্টমারঃ </span>{" "}
+            {name || "N/A"}
           </p>
           <p>
-            <span className="font-semibold text-gray-700">ইমেইলঃ</span>{" "}
-            {user?.email || "N/A"}
+            <span className="font-semibold text-gray-700">মোবাইলঃ </span>{" "}
+            {mobile || "N/A"}
           </p>
           <p>
             <span className="font-semibold text-gray-700">ডেলিভারি স্থানঃ</span>{" "}
