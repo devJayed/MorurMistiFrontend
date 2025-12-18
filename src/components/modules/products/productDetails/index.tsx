@@ -15,8 +15,10 @@ import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { siteInfo } from "@/lib/siteInfo";
+import { useState } from "react";
 
 const ProductDetails = ({ product }: { product: IProduct }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -27,28 +29,50 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
   };
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-md my-5 bg-gray-50">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 rounded-md my-5 bg-gray-50">
         {/* ========== LEFT : PRODUCT IMAGES ========== */}
-        <div>
-          <Image
-            src={product?.images[0].url}
-            alt="product image"
-            width={500}
-            height={500}
-            className="rounded-md w-full object-cover h-80"
-          />
 
-          <div className="grid grid-cols-3 gap-4 mt-5">
-            {product?.images.slice(0, 3).map((image, idx: number) => (
-              <Image
+        <div className="flex flex-col lg:flex-row gap-2">
+          {/* Thumbnail column */}
+          <div
+            className="
+      order-2 lg:order-1
+      flex lg:flex-col flex-row
+      align-center justify-center
+      gap-3
+      lg:max-h-[400px]
+      overflow-x-auto lg:overflow-y-auto
+    "
+          >
+            {product?.images.map((image, idx: number) => (
+              <button
                 key={idx}
-                src={image.url}
-                alt={image.altText || "Product image"}
-                width={500}
-                height={500}
-                className="rounded-md w-full object-cover h-40"
-              />
+                onClick={() => setActiveIndex(idx)}
+                className={`border rounded-md p-1 transition
+          shrink-0
+          ${activeIndex === idx ? "border-primary" : "border-muted"}
+        `}
+              >
+                <Image
+                  src={image.url}
+                  alt={image.altText || "Product thumbnail"}
+                  width={100}
+                  height={100}
+                  className="object-cover h-20 w-20"
+                />
+              </button>
             ))}
+          </div>
+
+          {/* Main image */}
+          <div className="order-1 lg:order-2 flex-1">
+            <Image
+              src={product?.images[activeIndex]?.url}
+              alt="Product image"
+              width={600}
+              height={600}
+              className="rounded-md w-full object-contain"
+            />
           </div>
         </div>
 
