@@ -20,14 +20,15 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 py-12 md:py-20">
+    <footer className="bg-gray-100 border-t border-gray-200 py-12 md:py-20 mt-24 md:mt-28">
       <div className="max-w-6xl mx-auto px-4 text-center">
         {/* Logo + Description */}
         <div className="flex flex-col items-center mb-6">
           <Logo />
 
           <p className="text-gray-600 mt-4 max-w-lg mx-auto text-md md:text-lg leading-relaxed">
-            মরুর মিষ্টি - প্রিমিয়াম মানের অ্যারাবিয়ান খেজুর -এর নির্ভরযোগ্য গন্তব্য। <br></br>গুণগত মানেই আমাদের অঙ্গীকার।
+            মরুর মিষ্টি - প্রিমিয়াম মানের অ্যারাবিয়ান খেজুর -এর নির্ভরযোগ্য
+            গন্তব্য। <br></br>গুণগত মানেই আমাদের অঙ্গীকার।
           </p>
         </div>
 

@@ -1,7 +1,7 @@
-import { IProduct } from "@/types";
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import { addCoupon } from "@/services/cart";
+import { IProduct } from "@/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 export interface CartProduct extends IProduct {
   orderQuantity: number;
@@ -10,10 +10,10 @@ export interface CartProduct extends IProduct {
 interface InitialState {
   name: string;
   mobile: string;
-  email: string;
+  // email: string;
   products: CartProduct[];
-  city: string;
   shippingAddress: string;
+  city: string;
   coupon: {
     code: string;
     discountAmount: number;
@@ -25,10 +25,10 @@ interface InitialState {
 const initialState: InitialState = {
   name: "",
   mobile: "",
-  email: "",
+  // email: "",
   products: [],
-  city: "",
   shippingAddress: "",
+  city: "",
   coupon: {
     code: "",
     discountAmount: 0,
@@ -52,7 +52,6 @@ export const fetchCoupon = createAsyncThunk(
       if (!res.success) {
         throw new Error(res.message);
       }
-
       return res;
     } catch (err: any) {
       console.log(err);
@@ -108,19 +107,19 @@ const cartSlice = createSlice({
     updateMobile: (state, action) => {
       state.mobile = action.payload;
     },
-    updateEmail: (state, action) => {
-      state.email = action.payload;
+    // updateEmail: (state, action) => {
+    //   state.email = action.payload;
+    // },
+    updateShippingAddress: (state, action) => {
+      state.shippingAddress = action.payload;
     },
     updateCity: (state, action) => {
       state.city = action.payload;
     },
-    updateShippingAddress: (state, action) => {
-      state.shippingAddress = action.payload;
-    },
     clearCart: (state) => {
       state.name = "";
       state.mobile = "";
-      state.email = "";
+      // state.email = "";
       state.products = [];
       state.city = "";
       state.shippingAddress = "";
@@ -148,7 +147,6 @@ const cartSlice = createSlice({
 });
 
 //* Products
-
 export const orderedProductsSelector = (state: RootState) => {
   return state.cart.products;
 };
@@ -157,18 +155,18 @@ export const orderSelector = (state: RootState) => {
   return {
     name: state.cart.name,
     mobile: state.cart.mobile,
-    email: state.cart.email,
+    // email: state.cart.email,
     products: state.cart.products.map((product) => ({
       product: product._id,
       quantity: product.orderQuantity,
       color: "White",
     })),
-    shippingAddress: `${state.cart.shippingAddress} - ${state.cart.city}`,
+    shippingAddress: state.cart.shippingAddress,
+    city: state.cart.city,
     paymentMethod: "COD",
   };
 };
 //* Payment
-
 export const subTotalSelector = (state: RootState) => {
   return state.cart.products.reduce((acc, product) => {
     if (product.offerPrice) {
@@ -222,9 +220,9 @@ export const nameSelector = (state: RootState) => {
 export const mobileSelector = (state: RootState) => {
   return state.cart.mobile;
 };
-export const emailSelector = (state: RootState) => {
-  return state.cart.name;
-};
+// export const emailSelector = (state: RootState) => {
+//   return state.cart.name;
+// };
 
 export const citySelector = (state: RootState) => {
   return state.cart.city;
@@ -241,7 +239,7 @@ export const {
   removeProduct,
   updateName,
   updateMobile,
-  updateEmail,
+  // updateEmail,
   updateCity,
   updateShippingAddress,
   clearCart,

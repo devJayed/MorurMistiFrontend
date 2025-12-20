@@ -1,7 +1,7 @@
 export interface IOrder {
   name: string;
   mobile: string;
-  email: string;
+  // email: string;
   products: IOrderProduct[];
   coupon?: string;
   shippingAddress: string;

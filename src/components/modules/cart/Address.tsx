@@ -7,18 +7,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 
 import { cities } from "@/constants/cities";
-import {
-  citySelector,
-  shippingAddressSelector,
-  updateName,
-  updateCity,
-  updateShippingAddress,
-} from "@/redux/features/cartSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateCity } from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { Truck } from "lucide-react";
 
 export default function Address() {
   const dispatch = useAppDispatch();
@@ -39,13 +32,26 @@ export default function Address() {
 
   return (
     <div className="">
-      <h1 className="font-bold text-lg">শিপিং অ্যাড্রেস</h1>
+      <h1 className="font-bold text-lg">
+        শিপিং মেথড <span className="text-red-500">*</span>
+      </h1>
 
       {/* City Select */}
-      <div className="mb-5">
+      <div className="flex items-center border hover:border-amber-600 rounded-md overflow-hidden hover:text-amber-600">
+        <div className="bg-gray-200 h-full px-4 py-3 flex items-center justify-center border-r">
+          <Truck className="w-5 h-5" />
+        </div>
         <Select onValueChange={handleCitySelect}>
-          <SelectTrigger id="city" className="w-full">
-            <SelectValue placeholder="Choose a city" />
+          <SelectTrigger
+            id="city"
+            className="w-full py-5 border-0
+    shadow-none
+    focus:border-0
+    focus:ring-0
+    focus-visible:ring-0
+    focus-visible:ring-offset-0"
+          >
+            <SelectValue placeholder="শিপিং মেথড সিলেক্ট করুণ" />
           </SelectTrigger>
           <SelectContent>
             {cities.map((city) => (
