@@ -60,7 +60,7 @@ const CartPage = () => {
           <ProductBanner title="Cart Page" path="Home - Cart" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-2 sm:mt-3">
+        <div className="grid grid-cols-1 mt-2 sm:mt-3">
           {/* Left Section – Only Cart Products */}
           <div className="lg:col-span-8 space-y-6">
             <CartProducts />
@@ -90,7 +90,7 @@ const CartPage = () => {
 
       {/* Cash on Delivery (COD) Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="w-[98vw] sm:w-[96vw] md:w-[94] max-w-none h-[95vh] max-h-none overflow-y-auto transition-all duration-300">
+        <DialogContent className="w-[98vw] sm:w-[96vw] md:w-[94vw] max-w-none h-[95vh] max-h-none overflow-y-auto transition-all duration-300">
           <DialogHeader>
             <DialogTitle className="sm:text-2xl text-lg font-bold flex items-center  justify-center">
               ক্যাশ অন ডেলিভারি
