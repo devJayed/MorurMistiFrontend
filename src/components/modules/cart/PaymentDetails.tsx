@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/lib/currencyFormatter";
 import {
   citySelector,
+  clearCart,
   couponSelector,
   discountAmountSelector,
   grandTotalSelector,
@@ -85,7 +86,7 @@ export default function PaymentDetails() {
       if (res.success) {
         toast.success(res.message, { id: orderLoading });
         setOrderData(res.data);
-        dispatch(clearCart());
+        dispatch(clearCart()); 
         setShowSuccess(true);
       } else {
         toast.error(res.message, { id: orderLoading });
