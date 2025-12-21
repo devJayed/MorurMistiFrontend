@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/lib/currencyFormatter";
 import {
   citySelector,
+  clearCart,
   couponSelector,
   discountAmountSelector,
   grandTotalSelector,
