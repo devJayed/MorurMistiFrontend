@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import "./globals.css";
 import Providers from "@/providers/Providers";
+import type { Metadata } from "next";
 import { Toaster } from "sonner";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,7 +24,13 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-kalpurush">
         <Providers>
-          <Toaster richColors position="top-center" />
+          <Toaster
+            richColors
+            position="top-center"
+            toastOptions={{
+              duration: 1000,
+            }}
+          />
           {children}
         </Providers>
       </body>

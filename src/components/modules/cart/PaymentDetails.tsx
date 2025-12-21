@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { currencyFormatter } from "@/lib/currencyFormatter";
 import {
   citySelector,
-  clearCart,
   couponSelector,
   discountAmountSelector,
   grandTotalSelector,
@@ -43,10 +42,10 @@ export default function PaymentDetails() {
   const [orderData, setOrderData] = useState<any>(null);
 
   const handleOrder = async () => {
-    console.log("Order Now button clicked.");
+    // console.log("Order Now button clicked.");
     const orderLoading = toast.loading("Order is being placed...");
     try {
-      console.log({ order });
+      // console.log({ order });
       if (!name) {
         throw new Error("আপনার নাম প্রদান করুন!");
       }
@@ -81,12 +80,12 @@ export default function PaymentDetails() {
       const res = await createOrder(orderDataToSend);
       console.log("Order response:", res);
 
-      console.log("res.data", res.data);
+      // console.log("res.data", res.data);
 
       if (res.success) {
         toast.success(res.message, { id: orderLoading });
-        dispatch(clearCart());
         setOrderData(res.data);
+        dispatch(clearCart());
         setShowSuccess(true);
       } else {
         toast.error(res.message, { id: orderLoading });

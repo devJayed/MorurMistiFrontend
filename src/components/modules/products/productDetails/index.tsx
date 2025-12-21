@@ -1,21 +1,21 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { IProduct } from "@/types";
-import { ShoppingCart, Star, Bolt, Wallet } from "lucide-react";
-import Image from "next/image";
-import { addProduct } from "@/redux/features/cartSlice";
-import { toast } from "sonner";
-import { useAppDispatch } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { siteInfo } from "@/lib/siteInfo";
+import { addProduct } from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { IProduct } from "@/types";
+import { ShoppingCart, Wallet } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const ProductDetails = ({ product }: { product: IProduct }) => {
   const [activeIndex, setActiveIndex] = useState(0);

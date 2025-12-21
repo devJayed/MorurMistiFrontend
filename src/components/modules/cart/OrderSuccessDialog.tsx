@@ -1,12 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface OrderSuccessDialogProps {
   open: boolean;
@@ -19,6 +20,8 @@ export default function OrderSuccessDialog({
   onClose,
   orderData,
 }: OrderSuccessDialogProps) {
+  const router = useRouter();
+
   if (!orderData) return null;
 
   console.log({ orderData });
@@ -135,7 +138,13 @@ export default function OrderSuccessDialog({
         </p>
 
         {/* Action Button */}
-        <Button onClick={onClose} className="w-full font-medium">
+        <Button
+          onClick={() => {
+            onClose(); // close dialog/modal
+            router.push("/"); // redirect to root
+          }}
+          className="w-full font-medium"
+        >
           ঠিক আছে
         </Button>
       </DialogContent>
