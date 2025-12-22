@@ -7,8 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
+import { currencyFormatter } from "@/lib/currencyFormatter";
 import { toJpeg } from "html-to-image";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
 interface OrderSuccessDialogProps {
@@ -22,9 +23,9 @@ export default function OrderSuccessDialog({
   onClose,
   orderData,
 }: OrderSuccessDialogProps) {
+  console.log({ orderData });
   const router = useRouter();
-  const popupRef = useRef<HTMLDivElement>(null); // ✅ hook inside component
-
+  const popupRef = useRef<HTMLDivElement>(null);
   if (!orderData) return null;
 
   const {
@@ -35,6 +36,9 @@ export default function OrderSuccessDialog({
     finalAmount,
     shippingAddress,
     paymentStatus,
+    deliveryCharge,
+    // discountAmount,
+    totalAmount,
   } = orderData;
 
   const handleSaveAndClose = async () => {
@@ -81,7 +85,7 @@ export default function OrderSuccessDialog({
           className="w-full px-2 pt-4 pb-2 space-y-3 bg-white text-center"
         >
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-green-600">
+            <DialogTitle className="flex justify-center items-center text-2xl font-bold text-green-600">
               🎉 অভিনন্দন! 🎉
             </DialogTitle>
           </DialogHeader>
@@ -116,11 +120,6 @@ export default function OrderSuccessDialog({
                 {paymentStatus}
               </span>
             </p>
-
-            <p>
-              <span className="font-semibold">সর্বমোটঃ </span>
-              <span className="text-green-600 font-bold">৳{finalAmount}</span>
-            </p>
           </div>
 
           <div className="w-full h-px bg-gray-200" />
@@ -128,13 +127,57 @@ export default function OrderSuccessDialog({
           {/* Products */}
           <div>
             <p className="font-semibold text-sm">🛍️ অর্ডারকৃত পণ্যসমূহ</p>
-            <ol className="list-decimal list-inside text-left text-sm max-h-32 overflow-y-auto px-4">
+            <div className="list-decimal list-inside text-left text-sm max-h-32 overflow-y-auto px-4">
               {products?.map((item: any, i: number) => (
-                <li key={i} className="border-b last:border-none pb-1">
-                  {item.quantity} × {item.product?.name}
+                <li
+                  key={i}
+                  className="flex justify-between space-y-2 items-center"
+                >
+                  {/* Left side */}
+                  <span className="text-gray-700">
+                    <span className="font-medium">{i + 1}.</span>{" "}
+                    {item.product?.name} × {item.quantity}
+                  </span>
+
+                  {/* Right side */}
+                  <span className="font-semibold text-gray-800">
+                    {currencyFormatter(
+                      item.product?.quantity *
+                        (item.product?.offerPrice || item.product?.unitPrice)
+                    )}
+                  </span>
                 </li>
               ))}
-            </ol>
+              <hr className="my-1" />
+
+              <div className="flex justify-between items-center">
+                <span className="font-semibold">সাব টোটাল</span>
+                <span className="text-green-600 font-semibold">
+                  {currencyFormatter(totalAmount)}
+                </span>
+              </div>
+              {/* Delivery charge */}
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">ডেলিভারি চার্জ</span>
+                <span className="text-gray-800">
+                  {currencyFormatter(deliveryCharge)}
+                </span>
+              </div>
+              {/* Discount amount  */}
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">ডিসকাউন্ট</span>
+                <span className="text-gray-800">
+                  BDT 0{/* {currencyFormatter(Number(discountAmount))} */}
+                </span>
+              </div>
+            </div>
+            <hr />
+            <div className="flex justify-between items-center px-4">
+              <span className="font-semibold">সর্বমোট </span>
+              <span className="text-green-600 font-bold">
+                {currencyFormatter(finalAmount)}
+              </span>
+            </div>
           </div>
 
           <div className="w-full h-px bg-gray-200" />
