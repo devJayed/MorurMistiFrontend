@@ -187,47 +187,85 @@ const CartPage = () => {
           <hr />
           <div className="grid grid-cols-1 gap-6">
             <div>
-              {/* <CartProducts /> */}
-              {products?.map((product: CartProduct, index: number) => (
-                <div
-                  key={product._id}
-                  className="flex items-center justify-between gap-1"
-                >
-                  {/* Left: Serial + Image + Name */}
-                  <div className="flex items-center gap-1 min-w-0">
-                    {/* Serial Number */}
-                    {/* <span className="text-lg font-bold text-muted-foreground">
-                      {index + 1}.
-                    </span> */}
-                    {/* Product Image */}
-                    <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                      {/* Serial Number Badge */}
-                      <span className="absolute -top-0 -left-0 w-5 h-5 rounded-full bg-amber-600 text-white text-xs font-bold flex items-center justify-center">
-                        {index + 1}
-                      </span>
+              {/* Header */}
+              <div
+                className="
+      grid grid-cols-[auto_1fr_auto_auto_auto]
+      text-xs text-gray-500 font-medium
+      px-2 pb-2
+    "
+              >
+                <span className="w-14 text-center">SL</span>
+                <span className="w-full text-center">Description</span>
+                <span className="w-8 text-center">Qty</span>
+                <span className="w-20 text-right">Unit (BDT)</span>
+                <span className="w-20 text-right">Total (BDT)</span>
+              </div>
 
-                      <Image
-                        src={product?.images?.[0]?.url || "/placeholder.png"}
-                        width={40}
-                        height={40}
-                        alt="product"
-                        className="object-cover w-full h-full"
-                      />
+              {/* Product Rows */}
+              {products?.map((product: CartProduct, index: number) => {
+                const qty = product.orderQuantity ?? 1;
+                const unitPrice = product.offerPrice ?? product.price;
+                const totalPrice = qty * unitPrice;
+
+                return (
+                  <div
+                    key={product._id}
+                    className="
+            grid grid-cols-[auto_1fr_auto_auto_auto]
+            items-center gap-2
+            py-2 px-2
+          "
+                  >
+                    {/* SL + Image */}
+                    <div className="flex items-center gap-1 w-14">
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0">
+                        <span
+                          className="
+                absolute top-0 left-0
+                w-5 h-5 rounded-full
+                bg-amber-600 text-white
+                text-xs font-bold
+                flex items-center justify-center
+              "
+                        >
+                          {index + 1}
+                        </span>
+
+                        <Image
+                          src={product?.images?.[0]?.url || "/placeholder.png"}
+                          width={40}
+                          height={40}
+                          alt="product"
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                     </div>
 
-                    {/* Product Name */}
-                    <h1 className="text-base sm:text-md truncate">
-                      {product.name}
-                    </h1>
-                  </div>
+                    {/* Description (takes remaining space) */}
+                    <div className="min-w-0">
+                      <h1 className="text-base sm:text-md truncate">
+                        {product.name}
+                      </h1>
+                    </div>
 
-                  {/* Right: Price */}
-                  <h2 className="text-base sm:text-md font-semibold whitespace-nowrap">
-                    {currencyFormatter(product.price)}
-                  </h2>
-                </div>
-              ))}
+                    {/* Qty */}
+                    <span className="w-8 text-center font-medium">{qty}</span>
+
+                    {/* Unit Price */}
+                    <span className="w-20 text-right whitespace-nowrap">
+                      {unitPrice}
+                    </span>
+
+                    {/* Total Price */}
+                    <span className="w-20 text-right font-semibold whitespace-nowrap">
+                      {totalPrice}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
+
             <div>
               <PaymentDetails />
             </div>

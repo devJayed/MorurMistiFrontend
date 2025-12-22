@@ -111,21 +111,22 @@ export default function PaymentDetails() {
                 <p className="font-semibold">{currencyFormatter(subTotal)}</p>
               </div>
               <div className="flex justify-between">
-                <p className="text-gray-500 ">ডিসকাউন্ট</p>
-                <p className="font-semibold">
-                  {currencyFormatter(discountAmount)}
-                </p>
-              </div>
-              <div className="flex justify-between">
-                <p className="text-gray-500 ">ডেলিভারি চার্জ </p>
+                <p className="text-gray-500 ">ডেলিভারি চার্জ (+)</p>
                 <p className="font-semibold">
                   {currencyFormatter(shippingCost)}
                 </p>
               </div>
+              <div className="flex justify-between">
+                <p className="text-gray-500 ">ডিসকাউন্ট (-)</p>
+                <p className="font-semibold">
+                  {currencyFormatter(discountAmount)}
+                </p>
+              </div>
+              
               <hr />
             </div>
 
-            <div className="flex justify-between mt-2 mb-6">
+            <div className="flex justify-between mt-2 mb-6">  
               <p className="text-gray-500 ">সর্বমোট = </p>
               <p className="font-semibold">{currencyFormatter(grandTotal)}</p>
             </div>

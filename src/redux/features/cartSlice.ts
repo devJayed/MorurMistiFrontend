@@ -11,7 +11,7 @@ interface InitialState {
   name: string;
   mobile: string;
   // email: string;
-  products: CartProduct[];
+  products: CartProduct[];  
   shippingAddress: string;
   city: string;
   coupon: {
@@ -65,16 +65,37 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addProduct: (state, action) => {
-      const productToAdd = state.products.find(
-        (product) => product._id === action.payload._id
+      console.log("➡️ addProduct action triggered");
+      // Incoming product from UI
+      const incomingProduct = action.payload;
+      console.log("📦 Incoming product:", incomingProduct);
+
+      // Current cart products
+      console.log("🛒 Current cart products:", state.products);
+
+      // Try to find product already in cart
+      const existingProduct = state.products.find(
+        (product) => product._id === incomingProduct._id
       );
+      console.log("🔍 Existing product found:", existingProduct);
+      // If product already exists → increase quantity
+      if (existingProduct) {
+        existingProduct.orderQuantity += 1;
 
-      if (productToAdd) {
-        productToAdd.orderQuantity += 1;
-        return;
+        console.log("➕ Quantity increased to:", existingProduct.orderQuantity);
+
+        console.log("🛒 Updated cart products:", state.products);
+        return; 
       }
+      // If product does not exist → add new
+      const newProduct = {
+        ...incomingProduct,
+        orderQuantity: 1,
+      };
 
-      state.products.push({ ...action.payload, orderQuantity: 1 });
+      state.products.push(newProduct);
+      console.log("✅ New product added to cart:", newProduct);
+      console.log("🛒 Final cart products:", state.products);
     },
     incrementOrderQuantity: (state, action) => {
       const productToIncrement = state.products.find(
@@ -167,16 +188,45 @@ export const orderSelector = (state: RootState) => {
   };
 };
 //* Payment
+// export const subTotalSelector = (state: RootState) => {
+//   return state.cart.products.reduce((acc, product) => {
+//     console.log({ product });
+//     if (product.offerPrice) {
+//       console.log("Acc", acc);
+//       return acc + product.offerPrice * product.orderQuantity;
+//     } else {
+//       console.log("Acc", acc);
+//       return acc + product.price * product.orderQuantity;
+//     }
+//   }, 0);
+// };
+//* Payment
 export const subTotalSelector = (state: RootState) => {
-  return state.cart.products.reduce((acc, product) => {
-    if (product.offerPrice) {
-      // console.log(product.offerPrice);
-      return acc + product.offerPrice * product.orderQuantity;
-    } else {
-      // console.log(product.price, "Price");
-      return acc + product.price * product.orderQuantity;
-    }
+  console.log("🧮 ### Subtotal calculation started");
+  console.log("🛒 Cart products:", state.cart.products);
+
+  const subTotal = state.cart.products.reduce((accumulator, product, index) => {
+    console.log(`\n➡️ Processing product #${index + 1}`);
+    console.log("📦 Product:", product);
+
+    const quantity = product.orderQuantity;
+    const price = product.offerPrice ?? product.price;
+
+    console.log("🔢 Quantity:", quantity);
+    console.log("💰 Unit price used:", price);
+    console.log("🧾 Previous subtotal (acc):", accumulator);
+
+    const productTotal = price * quantity;
+    console.log("📊 Product total:", productTotal);
+
+    const newSubtotal = accumulator + productTotal;
+    console.log("✅ New subtotal:", newSubtotal);
+
+    return newSubtotal;
   }, 0);
+
+  console.log("🏁 Final subtotal:", subTotal);
+  return subTotal; // New subTotal and subTotal is same
 };
 
 export const shippingCostSelector = (state: RootState) => {

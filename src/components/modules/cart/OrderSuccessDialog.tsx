@@ -40,6 +40,7 @@ export default function OrderSuccessDialog({
     // discountAmount,
     totalAmount,
   } = orderData;
+  console.log("Products of oderSuccessDialog", { products });
 
   const handleSaveAndClose = async () => {
     if (!popupRef.current) return;
@@ -126,54 +127,89 @@ export default function OrderSuccessDialog({
 
           {/* Products */}
           <div>
-            <p className="font-semibold text-sm">🛍️ অর্ডারকৃত পণ্যসমূহ</p>
-            <div className="list-decimal list-inside text-left text-sm max-h-32 overflow-y-auto px-4">
-              {products?.map((item: any, i: number) => (
-                <li
-                  key={i}
-                  className="flex justify-between space-y-2 items-center"
-                >
-                  {/* Left side */}
-                  <span className="text-gray-700">
-                    <span className="font-medium">{i + 1}.</span>{" "}
-                    {item.product?.name} × {item.quantity}
-                  </span>
+            <p className="font-semibold text-sm mb-2">🛍️ অর্ডারকৃত পণ্যসমূহ</p>
 
-                  {/* Right side */}
-                  <span className="font-semibold text-gray-800">
-                    {currencyFormatter(
-                      item.product?.quantity *
-                        (item.product?.offerPrice || item.product?.unitPrice)
-                    )}
-                  </span>
-                </li>
-              ))}
-              <hr className="my-1" />
+            <div className="text-sm max-h-40 overflow-y-auto px-4 space-y-2">
+              {/* Header */}
+              <div
+                className="
+        grid grid-cols-[auto_1fr_auto_auto_auto]
+        text-gray-500 font-medium text-xs
+        pb-1
+      "
+              >
+                <span className="text-center w-6">SL</span>
+                <span className="text-center full">Description</span>
+                <span className="text-center w-10">Qty</span>
+                <span className="text-right w-18">Unit (BDT)</span>
+                <span className="text-right w-18">Total (BDT)</span>
+              </div>
 
-              <div className="flex justify-between items-center">
+              {/* Product Rows */}
+              {products?.map((item: any, i: number) => {
+                const quantity = item.quantity;
+                const unitPrice =
+                  item.offerPrice ?? item.unitPrice ?? item.product?.price ?? 0;
+
+                return (
+                  <div
+                    key={i}
+                    className="
+            grid grid-cols-[auto_1fr_auto_auto_auto]
+            items-center
+            text-gray-700
+          "
+                  >
+                    {/* Serial */}
+                    <span className="text-center font-medium w-6">{i + 1}</span>
+
+                    {/* Description (flexible column) */}
+                    <span className="truncate">{item.product?.name}</span>
+
+                    {/* Quantity */}
+                    <span className="text-center font-medium w-10">
+                      {quantity}
+                    </span>
+
+                    {/* Unit Price */}
+                    <span className="text-right w-18">{unitPrice}</span>
+
+                    {/* Total */}
+                    <span className="text-right font-semibold text-gray-800 w-18">
+                      {quantity * unitPrice}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <hr className="my-3" />
+
+            {/* Summary */}
+            <div className="px-4 space-y-1 text-sm">
+              <div className="flex justify-between">
                 <span className="font-semibold">সাব টোটাল</span>
-                <span className="text-green-600 font-semibold">
+                <span className="font-semibold text-green-600">
                   {currencyFormatter(totalAmount)}
                 </span>
               </div>
-              {/* Delivery charge */}
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">ডেলিভারি চার্জ</span>
-                <span className="text-gray-800">
-                  {currencyFormatter(deliveryCharge)}
-                </span>
+
+              <div className="flex justify-between">
+                <span className="text-gray-700">ডেলিভারি চার্জ (+)</span>
+                <span>{currencyFormatter(deliveryCharge)}</span>
               </div>
-              {/* Discount amount  */}
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">ডিসকাউন্ট</span>
-                <span className="text-gray-800">
-                  BDT 0{/* {currencyFormatter(Number(discountAmount))} */}
-                </span>
+
+              <div className="flex justify-between">
+                <span className="text-gray-700">ডিসকাউন্ট (-)</span>
+                <span>{currencyFormatter(0)}</span>
               </div>
             </div>
-            <hr />
+
+            <hr className="my-3" />
+
+            {/* Grand Total */}
             <div className="flex justify-between items-center px-4">
-              <span className="font-semibold">সর্বমোট </span>
+              <span className="font-semibold">সর্বমোট</span>
               <span className="text-green-600 font-bold">
                 {currencyFormatter(finalAmount)}
               </span>
